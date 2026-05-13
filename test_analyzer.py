@@ -1,6 +1,6 @@
 """Unit tests for DNA Sequence Analyzer"""
 
-from analyzer import gc_content, reverse_complement, codon_frequency, read_fasta
+from analyzer import gc_content, reverse_complement, codon_frequency, read_fasta, translate_to_protein, get_amino_acid_info
 
 def test_gc_content():
     """Test GC content calculation"""
@@ -67,9 +67,47 @@ def test_read_fasta():
     
     print("PASSED: FASTA Parser Tests")
 
+def test_translate_to_protein():
+    """Test DNA to protein translation"""
+    # Test 1: Simple sequence
+    dna = "ATGGCTGAA"
+    protein = translate_to_protein(dna)
+    assert protein == "MAE"
+    
+    # Test 2: With stop codon
+    dna = "ATGGCTTAA"  # TAA is stop codon
+    protein = translate_to_protein(dna)
+    assert protein == "MA*"
+    
+    # Test 3: Longer sequence
+    dna = "ATGGTGCACCCTGACTCC"
+    protein = translate_to_protein(dna)
+    assert protein == "MVHPDS"
+    
+    print("PASSED: Translation Tests")
+
+def test_get_amino_acid_info():
+    """Test amino acid composition analysis"""
+    # Test 1: Simple protein
+    protein = "MVHPDT"
+    composition = get_amino_acid_info(protein)
+    assert composition['M'] == 1
+    assert composition['V'] == 1
+    assert composition['H'] == 1
+    
+    # Test 2: With repeats
+    protein = "AAAAGG"
+    composition = get_amino_acid_info(protein)
+    assert composition['A'] == 4
+    assert composition['G'] == 2
+    
+    print("PASSED: Amino Acid Info Tests")
+
 if __name__ == "__main__":
     test_gc_content()
     test_reverse_complement()
     test_codon_frequency()
     test_read_fasta()
+    test_translate_to_protein()
+    test_get_amino_acid_info()
     print("\nAll Tests Passed!")
