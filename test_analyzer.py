@@ -1,6 +1,6 @@
 """Unit tests for DNA Sequence Analyzer"""
 
-from analyzer import gc_content, reverse_complement, codon_frequency
+from analyzer import gc_content, reverse_complement, codon_frequency, read_fasta
 
 def test_gc_content():
     """Test GC content calculation"""
@@ -47,8 +47,29 @@ def test_codon_frequency():
     
     print("PASSED: Codon Frequency Tests")
 
+def test_read_fasta():
+    """Test FASTA file reading"""
+    # Test 1: Read sample FASTA file
+    sequences = read_fasta("sample.fasta")
+    assert len(sequences) == 3
+    assert "human_beta_globin" in sequences
+    assert "mouse_beta_globin" in sequences
+    assert "fruit_fly_hemoglobin" in sequences
+    
+    # Test 2: Check sequence content
+    human_seq = sequences["human_beta_globin"]
+    assert human_seq.startswith("ATGGTGCACC")
+    assert len(human_seq) > 0
+    
+    # Test 3: Test nonexistent file
+    empty_result = read_fasta("nonexistent.fasta")
+    assert empty_result == {}
+    
+    print("PASSED: FASTA Parser Tests")
+
 if __name__ == "__main__":
     test_gc_content()
     test_reverse_complement()
     test_codon_frequency()
+    test_read_fasta()
     print("\nAll Tests Passed!")
