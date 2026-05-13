@@ -297,6 +297,72 @@ textarea:focus {
     border-radius: 6px;
 }
 
+.label-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.label-flex label {
+    margin-bottom: 0;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.btn-text:hover {
+    color: var(--primary-hover);
+}
+
+.export-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+}
+
+.export-btn:hover {
+    background: rgba(255,255,255,0.05);
+    border-color: var(--primary-color);
+}
+
+.export-controls {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid var(--border-color);
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+}
+
+.alignment-view {
+    font-family: 'Courier New', Courier, monospace;
+    background: rgba(0,0,0,0.3);
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    white-space: pre;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.mut-sub { color: #f2cc60; font-weight: bold; }
+.mut-ins { color: #2ea043; font-weight: bold; }
+.mut-del { color: #f85149; font-weight: bold; }
+
 /* Table for Mutator / Codon */
 .data-table {
     width: 100%;

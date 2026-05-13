@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeneScope Web | DNA Sequence Analyzer</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -28,8 +29,11 @@
             <div id="single-tab" class="tab-content active">
                 <form id="single-form">
                     <div class="input-group">
-                        <label for="sequence">DNA Sequence</label>
-                        <textarea id="sequence" placeholder="Enter DNA sequence (e.g., ATGCGT...)" rows="4" required></textarea>
+                        <div class="label-flex">
+                            <label for="sequence">DNA Sequence</label>
+                            <button type="button" class="btn-text" id="load-sample-single">Load p53 Example</button>
+                        </div>
+                        <textarea id="sequence" placeholder="Enter DNA sequence (e.g., ATGCGT...) or RNA. Spaces and numbers are ignored." rows="4" required></textarea>
                     </div>
                     
                     <div class="options-group">
@@ -46,7 +50,7 @@
                                 Reverse Complement
                             </label>
                             <label class="checkbox-container">
-                                <input type="checkbox" name="analysis_type" value="codon_frequency">
+                                <input type="checkbox" name="analysis_type" value="codon_frequency" checked>
                                 <span class="checkmark"></span>
                                 Codon Frequency
                             </label>
@@ -54,6 +58,16 @@
                                 <input type="checkbox" name="analysis_type" value="translation">
                                 <span class="checkmark"></span>
                                 Translate to Protein
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="analysis_type" value="primer_tm">
+                                <span class="checkmark"></span>
+                                Primer Tm Calculator
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="analysis_type" value="orf_finder" checked>
+                                <span class="checkmark"></span>
+                                ORF Finder (6 Frames)
                             </label>
                         </div>
                     </div>
@@ -70,15 +84,21 @@
                 <form id="compare-form">
                     <div class="input-grid">
                         <div class="input-group">
-                            <label for="seq1">Reference Sequence</label>
+                            <div class="label-flex">
+                                <label for="seq1">Reference Sequence</label>
+                                <button type="button" class="btn-text" id="load-sample-ref">Load BRCA1 WT</button>
+                            </div>
                             <textarea id="seq1" placeholder="Enter reference sequence..." rows="4" required></textarea>
                         </div>
                         <div class="input-group">
-                            <label for="seq2">Target Sequence</label>
+                            <div class="label-flex">
+                                <label for="seq2">Target Sequence</label>
+                                <button type="button" class="btn-text" id="load-sample-tgt">Load BRCA1 Mut</button>
+                            </div>
                             <textarea id="seq2" placeholder="Enter target sequence..." rows="4" required></textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn primary-btn">Compare Sequences</button>
+                    <button type="submit" class="btn primary-btn">Compare Sequences (NW Alignment)</button>
                 </form>
                 
                 <div id="compare-results" class="results-container hidden">
