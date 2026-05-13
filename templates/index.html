@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeneScope Web | DNA Sequence Analyzer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>GeneScope <span class="highlight">Web</span></h1>
+            <p>Premium DNA Sequence Analysis & Mutation Detection</p>
+        </header>
+
+        <main class="glass-panel">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="single">Single Sequence</button>
+                <button class="tab-btn" data-tab="compare">Mutation Detector</button>
+            </div>
+
+            <div id="single-tab" class="tab-content active">
+                <form id="single-form">
+                    <div class="input-group">
+                        <label for="sequence">DNA Sequence</label>
+                        <textarea id="sequence" placeholder="Enter DNA sequence (e.g., ATGCGT...)" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="options-group">
+                        <p class="label">Analysis Options</p>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="analysis_type" value="gc_content" checked>
+                                <span class="checkmark"></span>
+                                GC Content
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="analysis_type" value="reverse_complement" checked>
+                                <span class="checkmark"></span>
+                                Reverse Complement
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="analysis_type" value="codon_frequency">
+                                <span class="checkmark"></span>
+                                Codon Frequency
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" name="analysis_type" value="translation">
+                                <span class="checkmark"></span>
+                                Translate to Protein
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn primary-btn">Analyze Sequence</button>
+                </form>
+                
+                <div id="single-results" class="results-container hidden">
+                    <!-- Results injected here by JS -->
+                </div>
+            </div>
+
+            <div id="compare-tab" class="tab-content">
+                <form id="compare-form">
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label for="seq1">Reference Sequence</label>
+                            <textarea id="seq1" placeholder="Enter reference sequence..." rows="4" required></textarea>
+                        </div>
+                        <div class="input-group">
+                            <label for="seq2">Target Sequence</label>
+                            <textarea id="seq2" placeholder="Enter target sequence..." rows="4" required></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Compare Sequences</button>
+                </form>
+                
+                <div id="compare-results" class="results-container hidden">
+                    <!-- Results injected here by JS -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 """Unit tests for DNA Sequence Analyzer"""
 
-from analyzer import gc_content, reverse_complement, codon_frequency, read_fasta, translate_to_protein, get_amino_acid_info
+from analyzer import gc_content, reverse_complement, codon_frequency, read_fasta, translate_to_protein, get_amino_acid_info, find_mutations, calculate_similarity, analyze_mutations, get_mutation_type
 
 def test_gc_content():
     """Test GC content calculation"""
@@ -103,6 +103,81 @@ def test_get_amino_acid_info():
     
     print("PASSED: Amino Acid Info Tests")
 
+def test_find_mutations():
+    """Test mutation detection between two sequences"""
+    # Test 1: Identical sequences
+    seq1 = "ATGCGT"
+    seq2 = "ATGCGT"
+    assert find_mutations(seq1, seq2) == []
+    
+    # Test 2: Single mutation
+    seq1 = "ATGCGT"
+    seq2 = "ATGGGT"
+    mutations = find_mutations(seq1, seq2)
+    assert len(mutations) == 1
+    assert mutations[0] == {'position': 3, 'seq1': 'C', 'seq2': 'G'}
+    
+    # Test 3: Multiple mutations
+    seq1 = "ATGCGT"
+    seq2 = "TTGAGT"
+    mutations = find_mutations(seq1, seq2)
+    assert len(mutations) == 2
+    assert mutations[0] == {'position': 0, 'seq1': 'A', 'seq2': 'T'}
+    assert mutations[1] == {'position': 3, 'seq1': 'C', 'seq2': 'A'}
+    
+    # Test 4: Different lengths
+    seq1 = "ATGC"
+    seq2 = "ATGCGT"
+    assert find_mutations(seq1, seq2) == []
+    
+    print("PASSED: Mutation Detection Tests")
+
+def test_calculate_similarity():
+    """Test sequence similarity calculation"""
+    # Test 1: Identical sequences
+    assert round(calculate_similarity("ATGC", "ATGC"), 2) == 100.0
+    
+    # Test 2: Completely different
+    assert round(calculate_similarity("ATGC", "CGTA"), 2) == 0.0
+    
+    # Test 3: 75% similar
+    assert round(calculate_similarity("ATGC", "ATGA"), 2) == 75.0
+    
+    # Test 4: 50% similar
+    assert round(calculate_similarity("ATGC", "TTTT"), 2) == 25.0
+    
+    print("PASSED: Similarity Calculation Tests")
+
+def test_get_mutation_type():
+    """Test mutation type classification"""
+    # Transitions (purine to purine or pyrimidine to pyrimidine)
+    assert get_mutation_type('A', 'G') == 'Transition'
+    assert get_mutation_type('G', 'A') == 'Transition'
+    assert get_mutation_type('C', 'T') == 'Transition'
+    assert get_mutation_type('T', 'C') == 'Transition'
+    
+    # Transversions (purine to pyrimidine or vice versa)
+    assert get_mutation_type('A', 'T') == 'Transversion'
+    assert get_mutation_type('A', 'C') == 'Transversion'
+    assert get_mutation_type('G', 'T') == 'Transversion'
+    assert get_mutation_type('G', 'C') == 'Transversion'
+    
+    print("PASSED: Mutation Type Tests")
+
+def test_analyze_mutations():
+    """Test comprehensive mutation analysis"""
+    # Test sickle cell mutation
+    normal = "CTGAGGAGAAGTCTGCCGTT"
+    sickle = "CTGTGGAGAAGTCTGCCGTT"
+    
+    analysis = analyze_mutations(normal, sickle)
+    assert analysis['total_mutations'] == 1
+    assert round(analysis['similarity_percent'], 2) == 95.0
+    assert analysis['transversions'] == 1
+    assert analysis['transitions'] == 0
+    
+    print("PASSED: Mutation Analysis Tests")
+
 if __name__ == "__main__":
     test_gc_content()
     test_reverse_complement()
@@ -110,4 +185,5 @@ if __name__ == "__main__":
     test_read_fasta()
     test_translate_to_protein()
     test_get_amino_acid_info()
+    test_find_mutations()
     print("\nAll Tests Passed!")

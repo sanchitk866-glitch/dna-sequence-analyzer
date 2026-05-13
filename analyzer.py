@@ -137,3 +137,24 @@ def get_amino_acid_info(protein_sequence):
             aa_counts[amino_acid] = 1
     
     return aa_counts
+
+def find_mutations(seq1, seq2):
+    """Compare two sequences and find differences (mutations).
+    
+    Returns a list of dictionaries containing the position, original character,
+    and mutated character for each difference.
+    """
+    mutations = []
+    
+    # Compare up to the length of the shorter sequence
+    min_len = min(len(seq1), len(seq2))
+    
+    for i in range(min_len):
+        if seq1[i] != seq2[i]:
+            mutations.append({
+                'position': i,
+                'seq1': seq1[i],
+                'seq2': seq2[i]
+            })
+            
+    return mutations
